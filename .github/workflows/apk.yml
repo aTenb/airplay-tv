@@ -1,46 +1,95 @@
-name: Generate APK
+name: Build & Release
 
 env:
   main_project_module: app
 
-# manual only: needs STORE and LOCAL signing secrets in the repo settings
 on:
   workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Publish as GitHub Release'
+        required: false
+        type: boolean
+        default: false
+  push:
+    branches: [main]
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Set TAG
         run: |
-          echo "version=$(sed -n 's/.*versionName = "\(.*\)".*/\1/p' ${{ env.main_project_module }}/build.gradle.kts)" >> $GITHUB_ENV
+          VERSION=$(sed -n 's/.*versionName = "\(.*\)".*/\1/p' ${{ env.main_project_module }}/build.gradle.kts)
+          echo "version=${VERSION}" >> $GITHUB_ENV
 
       - name: Use JDK
-        uses: actions/setup-java@v6
+        uses: actions/setup-java@v4
         with:
           distribution: "zulu"
           java-version: "21"
           cache: "gradle"
 
-      - name: Build
+      # fixed debug keystore across runs: generated once, cached, so installs
+      # can be upgraded with adb install -r instead of failing on signature
+      - name: Cache debug keystore
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: android-debug-keystore-v1
+          save-always: true
+
+      - name: Ensure debug keystore
+        run: |
+          mkdir -p ~/.android
+          if [ ! -f ~/.android/debug.keystore ]; then
+            keytool -genkeypair -v -keystore ~/.android/debug.keystore -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -storepass android -keypass android -dname "CN=Android Debug,O=Android,C=US" >/dev/null 2>&1
+          fi
+
+      - name: Build dual-ABI APK
         run: |
           export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct)
-          echo ${{ secrets.STORE }} | base64 -d > upload.jks
-          echo ${{ secrets.LOCAL }} | base64 -d > local.properties
-          chmod +x ./gradlew;
-          ./gradlew assembleRelease bundleRelease --stacktrace
-          rm upload.jks local.properties
+          chmod +x ./gradlew
+          ./gradlew assembleDebug -Pabis=armeabi-v7a,arm64-v8a --stacktrace
+          cp ${{ env.main_project_module }}/build/outputs/apk/debug/app-debug.apk ${{ env.main_project_module }}/build/outputs/apk/debug/AirPlay-TV-${{ env.version }}.apk
 
-      - name: Publish (GitHub)
-        uses: softprops/action-gh-release@v3
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          name: v${{ env.version }}
-          tag_name: v${{ env.version }}
-          files: |
-            ${{ env.main_project_module }}/build/outputs/apk/release/app-release.apk
-            ${{ env.main_project_module }}/build/outputs/bundle/release/app-release.aab
+          name: AirPlay-TV-${{ env.version }}
+          path: ${{ env.main_project_module }}/build/outputs/apk/debug/AirPlay-TV-${{ env.version }}.apk
+          if-no-files-found: error
+
+      - name: Publish to GitHub Releases
+        if: startsWith(github.ref, 'refs/tags/v') || github.event.inputs.create_release == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.main_project_module }}/build/outputs/apk/debug/AirPlay-TV-${{ env.version }}.apk
+          name: AirPlay TV v${{ env.version }}
+          draft: false
+          prerelease: false
+          body: |
+            ## 🚀 AirPlay TV 原生增强版 v${{ env.version }}
+
+            专为 Android TV / 电视盒子量身打造的 Apple AirPlay 原生级投屏接收端。
+
+            ### ✨ 核心特性与修改亮点
+            - **真正原生级投屏体验**：开机后台静默守护，平时无需手动打开 App；手机一键投屏，电视端 0 闪烁黑底直接全屏弹出。
+            - **干净利落退出，无痕回桌面**：手机断开投屏或按遥控器返回键，画面瞬切回 TV 桌面，绝无设置页面闪烁。
+            - **架构完全分离**：电视桌面图标纯粹作为“设置与状态面板”，平时永远不需要打开。
+            - **系统级全屏唤醒**：通过高优先级 `fullScreenIntent`，完美突破 Android 10+ 后台启动限制。
+            - **消除假警报防抖冲突**：移除无意义的握手阶段假唤醒，杜绝 600ms 防抖导致的二次投屏失灵。
+            - **双架构硬件加速**：支持 `armeabi-v7a`（32位电视）与 `arm64-v8a`，低延迟硬件解码，画质原生无拉伸。
+            - **全量中文本土化**：界面 100% 简体中文本地化，彻底清理波斯语/英文残留。
+
+            ### 📦 资产下载
+            - `AirPlay-TV-${{ env.version }}.apk`：内置双架构（armeabi-v7a + arm64-v8a），兼容绝大部分 Android TV、电视盒子与智能投影。

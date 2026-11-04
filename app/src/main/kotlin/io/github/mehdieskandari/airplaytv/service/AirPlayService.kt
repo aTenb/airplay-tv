@@ -220,7 +220,7 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
             val req = ApprovalRequest(key, name.ifEmpty { model.ifEmpty { key } }, model, source)
             _pendingApproval.value = req
             log("Waiting for approval: ${req.name} ($model)")
-            launchMainActivity()
+            launchMainActivity("requestApproval")
             val ok = runCatching { req.result.get(APPROVAL_TIMEOUT_S, java.util.concurrent.TimeUnit.SECONDS) }
                 .getOrDefault(false)
             _pendingApproval.value = null
@@ -259,7 +259,7 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
                 _startVideo(url, 0f, subtitleUrl)
                 if (title.isNotEmpty()) _videoTitle.value = title
                 log("DLNA play: $url")
-                if (shouldLaunchOnConnect()) launchMainActivity()
+                if (shouldLaunchOnConnect()) launchMainActivity("dlna:play")
             }
         }
         override fun resume() { airPlayVideoPlayer.setPlaying(true) }
@@ -773,6 +773,7 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
         // claim media-button routing for keys that arrive as media-session events
         mediaSession?.isActive = true
         log("AirPlay Video play: $location @ ${startPositionSeconds}s")
+        if (shouldLaunchOnConnect()) launchMainActivity("_startVideo")
     }
 
     override fun onVideoScrub(positionSeconds: Float) {
@@ -804,6 +805,7 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
             _videoResolution.value = "${w.toInt()}x${h.toInt()}"
             videoRenderer.setResolution(w.toInt(), h.toInt())
             _mirroringActive.value = true
+            if (shouldLaunchOnConnect()) launchMainActivity("onVideoSize(${w.toInt()}x${h.toInt()})")
         }
         log("Video size: ${srcW}x${srcH} -> ${w}x${h}")
     }
@@ -903,10 +905,8 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
     }
 
     override fun onConnectionInit() {
-        val firstConnection = _connectionCount.value == 0
         _connectionCount.value++
         log("Sender connected (${_connectionCount.value})")
-        if (firstConnection && shouldLaunchOnConnect()) launchMainActivity()
     }
 
     override fun onConnectionDestroy() {
@@ -994,7 +994,10 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
     }
 
     override fun onMirrorRunning(running: Boolean) {
-        if (running) videoRenderer.startSession() else {
+        if (running) {
+            videoRenderer.startSession()
+            if (shouldLaunchOnConnect()) launchMainActivity("onMirrorRunning(true)")
+        } else {
             videoRenderer.stopSession()
             _mirroringActive.value = false
         }
@@ -1188,12 +1191,23 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        val nm = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val channel = NotificationChannel(
             CHANNEL_ID,
             getString(R.string.notification_channel),
             NotificationManager.IMPORTANCE_LOW
         )
-        (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(channel)
+        nm.createNotificationChannel(channel)
+
+        val castChannel = NotificationChannel(
+            CAST_CHANNEL_ID,
+            getString(R.string.notification_channel_cast),
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = getString(R.string.notification_channel_cast_desc)
+            lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+        }
+        nm.createNotificationChannel(castChannel)
     }
 
     private fun buildNotification(): Notification {
@@ -1251,14 +1265,58 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
         return builder.build()
     }
 
-    private fun launchMainActivity() {
+    @Volatile private var _lastLaunchTime = 0L
+
+    private fun launchMainActivity(reason: String = "") {
+        val now = SystemClock.elapsedRealtime()
+        if (now - _lastLaunchTime < 300L) {
+            Log.d(TAG, "launchMainActivity debounced (<300ms, reason='$reason')")
+            return
+        }
+        _lastLaunchTime = now
+        Log.i(TAG, "launchMainActivity requested: reason='$reason', conns=${_connectionCount.value}, mirror=${_mirroringActive.value}, videoActive=${_videoPlaybackActive.value}")
+
+        val launchIntent = Intent(this, MainActivity::class.java).apply {
+            putExtra(MainActivity.EXTRA_CAST_LAUNCH, true)
+            addFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_SINGLE_TOP or
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+            )
+        }
+
+        val pi = PendingIntent.getActivity(
+            this,
+            1001,
+            launchIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT or (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0)
+        )
+
+        // 1. Post high-priority fullScreenIntent notification to break through background activity start restriction on Android 10+
+        try {
+            val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            val castNotification = NotificationCompat.Builder(this, CAST_CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_channel_cast_desc))
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setCategory(NotificationCompat.CATEGORY_CALL)
+                .setFullScreenIntent(pi, true)
+                .setAutoCancel(true)
+                .build()
+            nm.notify(CAST_NOTIFICATION_ID, castNotification)
+        } catch (e: Exception) {
+            Log.w(TAG, "Failed to send fullScreenIntent notification", e)
+        }
+
+        // 2. Also directly invoke startActivity on main thread
         Handler(Looper.getMainLooper()).post {
-            val launchIntent = Intent(this, MainActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             try {
+                Log.i(TAG, "startActivity(MainActivity, EXTRA_CAST_LAUNCH=true) called from AirPlayService")
                 startActivity(launchIntent)
             } catch (e: Exception) {
-                Log.w(TAG, "Failed to launch activity", e)
+                Log.w(TAG, "Failed to launch activity directly", e)
             }
         }
     }
@@ -1294,6 +1352,8 @@ class AirPlayService : LifecycleService(), RaopCallbackHandler, LogListener {
         private const val CLIENT_VOL_TIMEOUT_MS = 800L
         private const val CHANNEL_ID = "airplay_service"
         private const val NOTIFICATION_ID = 1
+        const val CAST_CHANNEL_ID = "airplay_cast_channel"
+        const val CAST_NOTIFICATION_ID = 2
         const val ACTION_PLAY_PAUSE = "io.github.mehdieskandari.airplaytv.PLAY_PAUSE"
         const val ACTION_NEXT = "io.github.mehdieskandari.airplaytv.NEXT"
         const val ACTION_PREV = "io.github.mehdieskandari.airplaytv.PREV"

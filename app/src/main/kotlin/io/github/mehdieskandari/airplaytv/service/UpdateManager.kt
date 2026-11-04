@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageInstaller
 import android.os.Build
 import android.util.Log
+import io.github.mehdieskandari.airplaytv.R
 import io.github.mehdieskandari.airplaytv.Prefs
 import io.github.mehdieskandari.airplaytv.get
 import kotlinx.coroutines.CoroutineScope
@@ -59,19 +60,19 @@ class UpdateManager(private val context: Context, private val scope: CoroutineSc
     fun checkNow() = scope.launch(Dispatchers.IO) { check(manual = true) }
 
     private fun check(manual: Boolean) {
-        _status.value = "Checking… · در حال بررسی…"
+        _status.value = context.getString(R.string.update_checking)
         val rel = runCatching { fetchLatest() }.onFailure { Log.w(TAG, "update check failed", it) }.getOrNull()
         if (rel == null) {
-            _status.value = "Couldn't reach GitHub · اتصال به GitHub ممکن نشد"
+            _status.value = context.getString(R.string.update_failed_network)
             return
         }
         if (isNewer(rel.version, currentVersion)) {
             // a version the user postponed only reappears on manual checks
             if (manual || prefs.getString(KEY_SKIPPED, "") != rel.version) _available.value = rel
-            _status.value = "New version ${rel.version} · نسخه جدید ${rel.version}"
+            _status.value = context.getString(R.string.update_new_version, rel.version)
         } else {
             _available.value = null
-            _status.value = "Up to date ($currentVersion) · به‌روز است"
+            _status.value = context.getString(R.string.update_up_to_date, currentVersion)
         }
     }
 
@@ -87,11 +88,11 @@ class UpdateManager(private val context: Context, private val scope: CoroutineSc
             try {
                 _progress.value = 0f
                 val file = download(rel.apkUrl)
-                _status.value = "Installing… · در حال نصب…"
+                _status.value = context.getString(R.string.update_installing)
                 install(file)
             } catch (e: Exception) {
                 Log.w(TAG, "update failed", e)
-                _status.value = "Update failed: ${e.message} · به‌روزرسانی ناموفق بود"
+                _status.value = context.getString(R.string.update_failed, e.message ?: "")
             } finally {
                 _progress.value = null
             }
@@ -181,7 +182,7 @@ class UpdateManager(private val context: Context, private val scope: CoroutineSc
 
     companion object {
         private const val TAG = "UpdateManager"
-        private const val LATEST_URL = "https://api.github.com/repos/MehdiEskandari/airplay-tv/releases/latest"
+        private const val LATEST_URL = "https://api.github.com/repos/aTenb/airplay-tv/releases/latest"
         private const val CHECK_INTERVAL_MS = 12 * 60 * 60 * 1000L
         private const val KEY_SKIPPED = "update_skipped_version"
 

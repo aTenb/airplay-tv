@@ -4,6 +4,8 @@
 
     <!-- Notification -->
     <string name="notification_channel">AirPlay Service</string>
+    <string name="notification_channel_cast">AirPlay Cast</string>
+    <string name="notification_channel_cast_desc">Wake up fullscreen cast view</string>
     <string name="notification_title">AirPlay TV is running</string>
     <string name="notification_text">Accepting AirPlay connections</string>
     <string name="notification_pin_title">AirPlay PIN Required</string>
@@ -23,6 +25,8 @@
     <string name="connected_count">%d connected</string>
     <string name="error_label">Error</string>
     <string name="stopped_label">Stopped</string>
+    <string name="status_ready">Ready for AirPlay &amp; DLNA</string>
+    <string name="status_stopped">Server stopped</string>
     <string name="btn_start">Start</string>
     <string name="btn_stop">Stop</string>
     <string name="btn_allow">Allow</string>
@@ -30,6 +34,14 @@
     <string name="local_network_label">Nearby devices access needed</string>
     <string name="local_network_desc">Allow access to nearby devices so AirPlay devices can find and connect to this device</string>
     <string name="unknown_track">Unknown</string>
+
+    <!-- How-to cards -->
+    <string name="howto_ios_title">iPhone · iPad</string>
+    <string name="howto_ios_desc">Control Center → Screen Mirroring → %s</string>
+    <string name="howto_mac_title">Mac</string>
+    <string name="howto_mac_desc">Control Center → Screen Mirroring, or AirPlay icon in video</string>
+    <string name="howto_android_title">Android</string>
+    <string name="howto_android_desc">Cast via DLNA from VLC, BubbleUPnP or video apps</string>
 
     <!-- Content descriptions -->
     <string name="cd_pip">Picture-in-Picture</string>
@@ -71,6 +83,27 @@
     <string name="dialog_pin_title">AirPlay PIN</string>
     <string name="btn_ok">OK</string>
 
+    <!-- Device Approval Dialog -->
+    <string name="dialog_approval_title">New device</string>
+    <string name="dialog_approval_message">\"%1$s\" wants to connect via %2$s</string>
+    <string name="dialog_approval_hint">If you choose Always, future connections will be accepted automatically (%d)</string>
+    <string name="btn_always_allow">Always allow</string>
+    <string name="btn_only_this_time">Only this time</string>
+    <string name="btn_deny">Deny</string>
+
+    <!-- Update Dialog & Manager -->
+    <string name="dialog_update_title">Update available: %s</string>
+    <string name="dialog_update_version">Current version: %1$s  →  %2$s</string>
+    <string name="dialog_update_downloading">Downloading… %d%%</string>
+    <string name="btn_update_now">Update now</string>
+    <string name="btn_later">Later</string>
+    <string name="update_checking">Checking for updates…</string>
+    <string name="update_failed_network">Could not reach GitHub</string>
+    <string name="update_new_version">New version %s</string>
+    <string name="update_up_to_date">Up to date (%s)</string>
+    <string name="update_installing">Installing…</string>
+    <string name="update_failed">Update failed: %s</string>
+
     <!-- Logs screen -->
     <string name="btn_export">Export</string>
     <string name="btn_clear">Clear</string>
@@ -80,6 +113,9 @@
     <string name="section_server">Server</string>
     <string name="section_connection">Connection</string>
     <string name="section_display">Display</string>
+    <string name="section_subtitles">Subtitles</string>
+    <string name="section_devices">Devices</string>
+    <string name="section_updates">Updates</string>
     <string name="section_decode">Decode</string>
     <string name="section_developer">Developer</string>
 
@@ -119,6 +155,8 @@
     <string name="setting_launch_on_connect">Open this application on connect</string>
     <string name="setting_launch_on_connect_desc">Show the screen when a sender connects</string>
     <string name="setting_launch_on_connect_no_permission">Tap to grant Display over other apps permission</string>
+    <string name="setting_overlay_permission">Allow \"Display over other apps\"</string>
+    <string name="setting_overlay_permission_desc">Needed so the approval prompt can appear while you use other apps</string>
     <string name="setting_discovery">Discoverable over</string>
     <string name="setting_discovery_all_desc">Advertise on all usable interfaces. Uses NsdManager.</string>
     <string name="setting_discovery_usb_desc">Only advertise over USB tethering to enforce wired connection. Uses custom mDNS responder.</string>
@@ -137,6 +175,56 @@
     <string name="chip_custom">Custom</string>
     <string name="chip_device_portrait">Portrait</string>
     <string name="chip_device_landscape">Landscape</string>
+
+    <!-- Settings: Subtitles -->
+    <string name="setting_sub_enabled">Show subtitles</string>
+    <string name="setting_sub_enabled_desc">Finds a same-named .vtt/.srt next to the video</string>
+    <string name="setting_sub_sample_text">This is a sample subtitle</string>
+    <string name="setting_sub_font">Font</string>
+    <string name="setting_sub_bold">Bold</string>
+    <string name="setting_sub_bold_desc">Thicker letters</string>
+    <string name="setting_sub_size">Size</string>
+    <string name="setting_sub_size_desc">Text size</string>
+    <string name="setting_sub_color">Color</string>
+    <string name="setting_sub_edge">Edge</string>
+    <string name="setting_sub_edge_desc">Makes text readable on bright scenes</string>
+    <string name="setting_sub_background">Background</string>
+    <string name="setting_sub_background_desc">Dark box behind the text</string>
+    <string name="setting_sub_position">Position</string>
+    <string name="setting_sub_position_desc">Distance from the bottom of the screen</string>
+    <string name="setting_sub_timing">Timing</string>
+    <string name="setting_sub_reset">Reset</string>
+    <string name="setting_sub_reset_style">Reset subtitle style</string>
+    <string name="setting_sub_reset_style_desc">Default font, 30, white, outline</string>
+
+    <!-- Colors -->
+    <string name="color_white">White</string>
+    <string name="color_yellow">Yellow</string>
+    <string name="color_light_yellow">Light Yellow</string>
+    <string name="color_cyan">Cyan</string>
+    <string name="color_green">Green</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_grey">Grey</string>
+
+    <!-- Settings: Devices -->
+    <string name="setting_dlna">DLNA for Android devices</string>
+    <string name="setting_dlna_desc">Lets Android phones and apps like VLC, BubbleUPnP or Web Video Caster send videos</string>
+    <string name="setting_ask_approval">Ask before new devices connect</string>
+    <string name="setting_ask_approval_desc">First connection needs approval on the TV, then it is remembered</string>
+    <string name="no_trusted_devices">No trusted devices yet</string>
+    <string name="no_trusted_devices_desc">They appear here after you choose \"Always allow\"</string>
+    <string name="btn_remove">Remove</string>
+    <string name="btn_forget_all">Forget all</string>
+
+    <!-- Settings: Updates -->
+    <string name="setting_auto_update">Check for updates automatically</string>
+    <string name="setting_auto_update_desc">Looks for a new version on GitHub every 12 hours</string>
+    <string name="update_version_current">Version %s</string>
+    <string name="btn_install_update">Install %s</string>
+    <string name="btn_check_update">Check now</string>
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
 
     <!-- Settings: Decode -->
     <string name="setting_h265">H.265 (HEVC)</string>
@@ -201,4 +289,12 @@
     <string name="debug_audio_glitch">Glitch: trim=%1$d drop=%2$d sil=%3$d ur=%4$d xrun=%5$d</string>
     <string name="debug_audio_decode">Decode: %1$s</string>
     <string name="debug_clients">Senders: %1$d</string>
+    <!-- About -->
+    <string name="section_about">About &amp; Highlights</string>
+    <string name="about_app_name">AirPlay TV Native Edition (v1.1.0)</string>
+    <string name="about_app_desc">Apple AirPlay receiver optimized for Android TV with native cast experience.</string>
+    <string name="about_features_title">Key Features</string>
+    <string name="about_features_desc">1. Native cast: Pop up fullscreen directly without opening the app\n2. Clean exit: Return to TV desktop instantly with zero UI flash\n3. Standalone daemon: TV desktop icon serves purely as settings; no manual open needed\n4. Breakthrough wake-up: High priority fullScreenIntent bypassing Android 10+ background restrictions\n5. Dual ABI acceleration: Supports armeabi-v7a and arm64-v8a hardware decoding\n6. 100% Simplified Chinese localization</string>
+    <string name="about_license_title">License &amp; Credits</string>
+    <string name="about_license_desc">Licensed under GPL-3.0. Built on RPiPlay / UxPlay / FFmpeg technologies.</string>
 </resources>

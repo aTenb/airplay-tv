@@ -37,6 +37,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.stringResource
+import io.github.mehdieskandari.airplaytv.R
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
@@ -201,21 +203,21 @@ fun TvHome(
 
         Row(horizontalArrangement = Arrangement.spacedBy(20.dp), modifier = Modifier.fillMaxWidth()) {
             HowToCard(
-                Icons.Default.PhoneIphone, "iPhone · iPad",
-                "Control Center → Screen Mirroring → $name",
-                "کنترل سنتر ← اسکرین میرورینگ",
+                Icons.Default.PhoneIphone,
+                stringResource(R.string.howto_ios_title),
+                stringResource(R.string.howto_ios_desc, name),
                 Modifier.weight(1f)
             )
             HowToCard(
-                Icons.Default.Laptop, "Mac",
-                "Control Center → Screen Mirroring",
-                "یا دکمه AirPlay داخل ویدیو",
+                Icons.Default.Laptop,
+                stringResource(R.string.howto_mac_title),
+                stringResource(R.string.howto_mac_desc),
                 Modifier.weight(1f)
             )
             HowToCard(
-                Icons.Default.Android, "Android",
-                "Cast from VLC, BubbleUPnP or Web Video Caster",
-                "پخش با برنامه‌های DLNA",
+                Icons.Default.Android,
+                stringResource(R.string.howto_android_title),
+                stringResource(R.string.howto_android_desc),
                 Modifier.weight(1f)
             )
         }
@@ -227,7 +229,7 @@ fun TvHome(
 }
 
 @Composable
-private fun HowToCard(icon: ImageVector, title: String, en: String, fa: String, modifier: Modifier) {
+private fun HowToCard(icon: ImageVector, title: String, desc: String, modifier: Modifier) {
     TvCard(modifier.height(224.dp)) {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Box(
@@ -236,8 +238,7 @@ private fun HowToCard(icon: ImageVector, title: String, en: String, fa: String, 
                 contentAlignment = Alignment.Center
             ) { Icon(icon, null, tint = Color.White, modifier = Modifier.size(30.dp)) }
             Text(title, style = MaterialTheme.typography.titleLarge, color = Color.White)
-            Text(en, style = MaterialTheme.typography.bodyMedium, color = TvColors.SecondaryLabel, lineHeight = 20.sp)
-            Text(fa, style = MaterialTheme.typography.bodyMedium, color = TvColors.TertiaryLabel)
+            Text(desc, style = MaterialTheme.typography.bodyMedium, color = TvColors.SecondaryLabel, lineHeight = 20.sp)
         }
     }
 }

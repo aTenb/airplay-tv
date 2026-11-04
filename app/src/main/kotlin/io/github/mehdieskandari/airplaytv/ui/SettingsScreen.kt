@@ -59,7 +59,6 @@ fun SettingsScreen(viewModel: MainViewModel) {
     val alacEnabled by viewModel.pref(Prefs.ALAC_ENABLED).collectAsState()
     val aacEnabled by viewModel.pref(Prefs.AAC_ENABLED).collectAsState()
     val resolution by viewModel.pref(Prefs.RESOLUTION).collectAsState()
-    val idlePreview by viewModel.pref(Prefs.IDLE_PREVIEW).collectAsState()
     val autoFullscreen by viewModel.pref(Prefs.AUTO_FULLSCREEN).collectAsState()
     val keepScreenOn by viewModel.pref(Prefs.KEEP_SCREEN_ON).collectAsState()
     val advertiseVideo by viewModel.pref(Prefs.ADVERTISE_VIDEO).collectAsState()
@@ -233,6 +232,8 @@ fun SettingsScreen(viewModel: MainViewModel) {
 
         UpdateSettings(viewModel)
 
+        AboutSettings(viewModel)
+
         SubtitleSettings(viewModel)
 
         SectionHeader(stringResource(R.string.section_decode))
@@ -288,13 +289,6 @@ fun SettingsScreen(viewModel: MainViewModel) {
                 description = stringResource(R.string.setting_keep_screen_on_desc),
                 checked = keepScreenOn,
                 onCheckedChange = { viewModel.set(Prefs.KEEP_SCREEN_ON, it) }
-            )
-
-            SettingSwitch(
-                title = stringResource(R.string.setting_idle_preview),
-                description = stringResource(R.string.setting_idle_preview_desc),
-                checked = idlePreview,
-                onCheckedChange = { viewModel.set(Prefs.IDLE_PREVIEW, it) }
             )
 
             SettingSwitch(
@@ -804,7 +798,7 @@ private fun SubtitleSettings(viewModel: MainViewModel) {
     val style = rememberSubtitleStyle(viewModel)
     val delayMs by viewModel.pref(Prefs.SUB_DELAY_MS).collectAsState()
 
-    SectionHeader("Subtitles · زیرنویس")
+    SectionHeader(stringResource(R.string.section_subtitles))
 
     // live preview on a dark "movie" background
     Box(
@@ -819,21 +813,21 @@ private fun SubtitleSettings(viewModel: MainViewModel) {
         contentAlignment = Alignment.BottomCenter
     ) {
         SubtitleText(
-            text = "این یک نمونه زیرنویس است\nThis is a sample subtitle",
+            text = stringResource(R.string.setting_sub_sample_text),
             style = style.copy(marginDp = 0),
             modifier = Modifier.padding(bottom = (style.marginDp / 4).coerceIn(8, 60).dp)
         )
     }
 
     SettingSwitch(
-        title = "Show subtitles · نمایش زیرنویس",
-        description = "Finds a same-named .vtt/.srt next to the video · فایل زیرنویس هم‌نام کنار فیلم پیدا می‌شود",
+        title = stringResource(R.string.setting_sub_enabled),
+        description = stringResource(R.string.setting_sub_enabled_desc),
         checked = style.enabled,
         onCheckedChange = { viewModel.set(Prefs.SUB_ENABLED, it) }
     )
 
     ListItem(
-        headlineContent = { Text("Font · فونت") },
+        headlineContent = { Text(stringResource(R.string.setting_sub_font)) },
         supportingContent = {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -859,32 +853,32 @@ private fun SubtitleSettings(viewModel: MainViewModel) {
     )
 
     SettingSwitch(
-        title = "Bold · ضخیم",
-        description = "Thicker letters · حروف پررنگ‌تر",
+        title = stringResource(R.string.setting_sub_bold),
+        description = stringResource(R.string.setting_sub_bold_desc),
         checked = style.bold,
         onCheckedChange = { viewModel.set(Prefs.SUB_BOLD, it) }
     )
 
     SettingChips(
-        title = "Size · اندازه",
-        description = "Text size · اندازه متن",
+        title = stringResource(R.string.setting_sub_size),
+        description = stringResource(R.string.setting_sub_size_desc),
         value = style.sizeSp.toString(),
         options = listOf(20, 24, 28, 30, 32, 36, 42, 48, 56, 64).map { it.toString() to it.toString() },
         onValueChange = { viewModel.set(Prefs.SUB_SIZE, it.toInt()) }
     )
 
     val colors = listOf(
-        "#FFFFFF" to "سفید",
-        "#FFEB3B" to "زرد",
-        "#FFF59D" to "زرد روشن",
-        "#80DEEA" to "فیروزه‌ای",
-        "#A5D6A7" to "سبز",
-        "#FFB74D" to "نارنجی",
-        "#F48FB1" to "صورتی",
-        "#E0E0E0" to "خاکستری",
+        "#FFFFFF" to stringResource(R.string.color_white),
+        "#FFEB3B" to stringResource(R.string.color_yellow),
+        "#FFF59D" to stringResource(R.string.color_light_yellow),
+        "#80DEEA" to stringResource(R.string.color_cyan),
+        "#A5D6A7" to stringResource(R.string.color_green),
+        "#FFB74D" to stringResource(R.string.color_orange),
+        "#F48FB1" to stringResource(R.string.color_pink),
+        "#E0E0E0" to stringResource(R.string.color_grey),
     )
     ListItem(
-        headlineContent = { Text("Color · رنگ") },
+        headlineContent = { Text(stringResource(R.string.setting_sub_color)) },
         supportingContent = {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -911,41 +905,41 @@ private fun SubtitleSettings(viewModel: MainViewModel) {
     )
 
     SettingChips(
-        title = "Edge · حاشیه حروف",
-        description = "Makes text readable on bright scenes · خوانایی روی صحنه‌های روشن",
+        title = stringResource(R.string.setting_sub_edge),
+        description = stringResource(R.string.setting_sub_edge_desc),
         value = style.edge,
-        options = listOf("outline" to "دورخط", "shadow" to "سایه", "none" to "هیچ"),
+        options = listOf("outline" to "Outline", "shadow" to "Shadow", "none" to "None"),
         onValueChange = { viewModel.set(Prefs.SUB_EDGE, it) }
     )
 
     SettingChips(
-        title = "Background · پس‌زمینه",
-        description = "Dark box behind the text · کادر تیره پشت متن",
+        title = stringResource(R.string.setting_sub_background),
+        description = stringResource(R.string.setting_sub_background_desc),
         value = style.bgPercent.toString(),
-        options = listOf(0 to "بدون", 25 to "۲۵٪", 35 to "۳۵٪", 50 to "۵۰٪", 70 to "۷۰٪", 90 to "۹۰٪")
+        options = listOf(0 to "0%", 25 to "25%", 35 to "35%", 50 to "50%", 70 to "70%", 90 to "90%")
             .map { (v, l) -> v.toString() to l },
         onValueChange = { viewModel.set(Prefs.SUB_BG, it.toInt()) }
     )
 
     SettingChips(
-        title = "Position · ارتفاع از پایین",
-        description = "Distance from the bottom of the screen · فاصله از پایین صفحه",
+        title = stringResource(R.string.setting_sub_position),
+        description = stringResource(R.string.setting_sub_position_desc),
         value = style.marginDp.toString(),
-        options = listOf(10 to "خیلی پایین", 40 to "پایین", 80 to "متوسط", 140 to "بالاتر", 220 to "خیلی بالا")
+        options = listOf(10 to "10dp", 40 to "40dp", 80 to "80dp", 140 to "140dp", 220 to "220dp")
             .map { (v, l) -> v.toString() to l },
         onValueChange = { viewModel.set(Prefs.SUB_MARGIN, it.toInt()) }
     )
 
     // timing: applies instantly while a video plays
     ListItem(
-        headlineContent = { Text("Timing · هماهنگی زمان") },
+        headlineContent = { Text(stringResource(R.string.setting_sub_timing)) },
         supportingContent = {
             Column(Modifier.padding(top = 8.dp)) {
                 Text(
                     when {
-                        delayMs == 0 -> "بدون تأخیر (0.0s)"
-                        delayMs > 0 -> "زیرنویس %.1f ثانیه دیرتر (+%.1fs)".format(delayMs / 1000f, delayMs / 1000f)
-                        else -> "زیرنویس %.1f ثانیه زودتر (%.1fs)".format(-delayMs / 1000f, delayMs / 1000f)
+                        delayMs == 0 -> "0.0s"
+                        delayMs > 0 -> "+%.1fs".format(delayMs / 1000f)
+                        else -> "%.1fs".format(delayMs / 1000f)
                     }
                 )
                 Spacer(Modifier.height(8.dp))
@@ -963,22 +957,17 @@ private fun SubtitleSettings(viewModel: MainViewModel) {
                     FilterChip(
                         selected = delayMs == 0,
                         onClick = { viewModel.set(Prefs.SUB_DELAY_MS, 0) },
-                        label = { Text("صفر · Reset") },
+                        label = { Text(stringResource(R.string.setting_sub_reset)) },
                         modifier = Modifier.dpadFocus()
                     )
                 }
-                Spacer(Modifier.height(4.dp))
-                Text(
-                    "اگر زیرنویس زودتر از صدا می‌آید + بزنید، اگر دیرتر می‌آید − بزنید",
-                    style = MaterialTheme.typography.bodySmall
-                )
             }
         }
     )
 
     SettingSwitch(
-        title = "Reset subtitle style · بازگشت به پیش‌فرض",
-        description = "Vazirmatn, 30, white, outline · وزیرمتن، ۳۰، سفید، دورخط",
+        title = stringResource(R.string.setting_sub_reset_style),
+        description = stringResource(R.string.setting_sub_reset_style_desc),
         checked = false,
         onCheckedChange = {
             viewModel.set(Prefs.SUB_FONT, Prefs.SUB_FONT.def)
@@ -1007,19 +996,19 @@ private fun DeviceSettings(viewModel: MainViewModel) {
         onDispose { lifecycle.removeObserver(obs) }
     }
 
-    SectionHeader("Devices · دستگاه‌ها")
+    SectionHeader(stringResource(R.string.section_devices))
 
     val dlnaEnabled by viewModel.pref(Prefs.DLNA_ENABLED).collectAsState()
     SettingSwitch(
-        title = "DLNA for Android phones · دریافت از گوشی اندرویدی",
-        description = "Lets Android phones and apps like VLC, BubbleUPnP or Web Video Caster send videos · پخش از گوشی‌های اندرویدی",
+        title = stringResource(R.string.setting_dlna),
+        description = stringResource(R.string.setting_dlna_desc),
         checked = dlnaEnabled,
         onCheckedChange = { viewModel.set(Prefs.DLNA_ENABLED, it) }
     )
 
     SettingSwitch(
-        title = "Ask before new devices connect · تأیید دستگاه جدید",
-        description = "First connection needs approval on the TV, then it's remembered · فقط بار اول تأیید می‌خواهد",
+        title = stringResource(R.string.setting_ask_approval),
+        description = stringResource(R.string.setting_ask_approval_desc),
         checked = approve,
         onCheckedChange = { viewModel.set(Prefs.APPROVE_NEW_DEVICES, it) }
     )
@@ -1029,9 +1018,9 @@ private fun DeviceSettings(viewModel: MainViewModel) {
             modifier = Modifier
                 .dpadFocus(RectangleShape)
                 .clickable { _openOverlaySettings(ctx) },
-            headlineContent = { Text("Allow \"Display over other apps\" · اجازه نمایش روی برنامه‌ها") },
+            headlineContent = { Text(stringResource(R.string.setting_overlay_permission)) },
             supportingContent = {
-                Text("Needed so the approval prompt can appear while you use other apps · برای نمایش پیام تأیید روی برنامه‌های دیگر لازم است")
+                Text(stringResource(R.string.setting_overlay_permission_desc))
             }
         )
     }
@@ -1039,8 +1028,8 @@ private fun DeviceSettings(viewModel: MainViewModel) {
     if (approve) {
         if (devices.isEmpty()) {
             ListItem(
-                headlineContent = { Text("No trusted devices yet · هنوز دستگاه تأییدشده‌ای نیست") },
-                supportingContent = { Text("They appear here after you choose \"Always allow\" · بعد از «همیشه اجازه بده» اینجا می‌آیند") }
+                headlineContent = { Text(stringResource(R.string.no_trusted_devices)) },
+                supportingContent = { Text(stringResource(R.string.no_trusted_devices_desc)) }
             )
         } else {
             devices.sortedByDescending { it.addedAt }.forEach { d ->
@@ -1051,7 +1040,7 @@ private fun DeviceSettings(viewModel: MainViewModel) {
                         OutlinedButton(
                             onClick = { viewModel.forgetDevice(d.id) },
                             modifier = Modifier.dpadFocus()
-                        ) { Text("Remove · حذف") }
+                        ) { Text(stringResource(R.string.btn_remove)) }
                     }
                 )
             }
@@ -1060,7 +1049,7 @@ private fun DeviceSettings(viewModel: MainViewModel) {
                     OutlinedButton(
                         onClick = { viewModel.forgetAllDevices() },
                         modifier = Modifier.dpadFocus()
-                    ) { Text("Forget all · حذف همه") }
+                    ) { Text(stringResource(R.string.btn_forget_all)) }
                 }
             )
         }
@@ -1073,30 +1062,50 @@ private fun UpdateSettings(viewModel: MainViewModel) {
     val status by viewModel.updateStatus.collectAsState()
     val update by viewModel.update.collectAsState()
 
-    SectionHeader("Updates · به‌روزرسانی")
+    SectionHeader(stringResource(R.string.section_updates))
 
     SettingSwitch(
-        title = "Check for updates automatically · بررسی خودکار",
-        description = "Looks for a new version on GitHub every 12 hours · هر ۱۲ ساعت نسخه جدید را بررسی می‌کند",
+        title = stringResource(R.string.setting_auto_update),
+        description = stringResource(R.string.setting_auto_update_desc),
         checked = autoCheck,
         onCheckedChange = { viewModel.set(Prefs.AUTO_UPDATE_CHECK, it) }
     )
 
     ListItem(
-        headlineContent = { Text("Version ${viewModel.currentVersion} · نسخه فعلی") },
+        headlineContent = { Text(stringResource(R.string.update_version_current, viewModel.currentVersion)) },
         supportingContent = { if (status.isNotEmpty()) Text(status) },
         trailingContent = {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 if (update != null) {
                     Button(onClick = { viewModel.installUpdate() }, modifier = Modifier.dpadFocus()) {
-                        Text("Install ${update?.version} · نصب")
+                        Text(stringResource(R.string.btn_install_update, update?.version ?: ""))
                     }
                 }
                 OutlinedButton(onClick = { viewModel.checkForUpdate() }, modifier = Modifier.dpadFocus()) {
-                    Text("Check now · بررسی")
+                    Text(stringResource(R.string.btn_check_update))
                 }
             }
         }
+    )
+}
+
+@Composable
+private fun AboutSettings(viewModel: MainViewModel) {
+    SectionHeader(stringResource(R.string.section_about))
+
+    ListItem(
+        headlineContent = { Text(stringResource(R.string.about_app_name), style = MaterialTheme.typography.titleMedium) },
+        supportingContent = { Text(stringResource(R.string.about_app_desc)) }
+    )
+
+    ListItem(
+        headlineContent = { Text(stringResource(R.string.about_features_title), style = MaterialTheme.typography.titleMedium) },
+        supportingContent = { Text(stringResource(R.string.about_features_desc)) }
+    )
+
+    ListItem(
+        headlineContent = { Text(stringResource(R.string.about_license_title), style = MaterialTheme.typography.titleMedium) },
+        supportingContent = { Text(stringResource(R.string.about_license_desc)) }
     )
 }
 
@@ -1158,10 +1167,10 @@ private fun SettingTextRow(
                     onClick = { if (valid) { if (text != value) onCommit(text); editing = false } },
                     enabled = valid,
                     modifier = Modifier.dpadFocus(CircleShape)
-                ) { Text("Save · ذخیره") }
+                ) { Text(stringResource(R.string.btn_save)) }
             },
             dismissButton = {
-                TextButton(onClick = { editing = false }, modifier = Modifier.dpadFocus(CircleShape)) { Text("Cancel · لغو") }
+                TextButton(onClick = { editing = false }, modifier = Modifier.dpadFocus(CircleShape)) { Text(stringResource(R.string.btn_cancel)) }
             }
         )
     }

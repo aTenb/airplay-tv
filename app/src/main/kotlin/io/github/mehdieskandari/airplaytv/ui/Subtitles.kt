@@ -55,13 +55,13 @@ object SubtitleFonts {
     )
 
     val labels = mapOf(
-        "system" to "پیش‌فرض",
-        "vazirmatn" to "وزیرمتن",
-        "sahel" to "ساحل",
-        "shabnam" to "شبنم",
-        "samim" to "صمیم",
-        "estedad" to "استعداد",
-        "lalezar" to "لاله‌زار",
+        "system" to "Default",
+        "vazirmatn" to "Vazirmatn",
+        "sahel" to "Sahel",
+        "shabnam" to "Shabnam",
+        "samim" to "Samim",
+        "estedad" to "Estedad",
+        "lalezar" to "Lalezar",
     )
 
     fun family(key: String): FontFamily = families[key] ?: FontFamily.Default

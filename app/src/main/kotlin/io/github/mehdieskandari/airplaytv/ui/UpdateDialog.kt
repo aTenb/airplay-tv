@@ -20,7 +20,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.github.mehdieskandari.airplaytv.R
 import io.github.mehdieskandari.airplaytv.viewmodel.MainViewModel
 
 // "new version available" prompt; hidden while a video plays
@@ -34,10 +36,10 @@ fun UpdateDialog(viewModel: MainViewModel, hidden: Boolean) {
     LaunchedEffect(r) { runCatching { focus.requestFocus() } }
     AlertDialog(
         onDismissRequest = { if (progress == null) viewModel.postponeUpdate() },
-        title = { Text("Update available · نسخه جدید ${r.version}") },
+        title = { Text(stringResource(R.string.dialog_update_title, r.version)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text("نسخه فعلی: ${viewModel.currentVersion}  →  ${r.version}")
+                Text(stringResource(R.string.dialog_update_version, viewModel.currentVersion, r.version))
                 val notes = r.notes.lineSequence()
                     .map { it.trim().removePrefix("#").trim() }
                     .filter { it.isNotEmpty() && !it.startsWith("---") }
@@ -51,7 +53,7 @@ fun UpdateDialog(viewModel: MainViewModel, hidden: Boolean) {
                 }
                 progress?.let {
                     LinearProgressIndicator(progress = { it }, modifier = Modifier.fillMaxWidth())
-                    Text("Downloading… ${(it * 100).toInt()}% · در حال دانلود")
+                    Text(stringResource(R.string.dialog_update_downloading, (it * 100).toInt()))
                 }
             }
         },
@@ -60,11 +62,11 @@ fun UpdateDialog(viewModel: MainViewModel, hidden: Boolean) {
                 onClick = { viewModel.installUpdate() },
                 enabled = progress == null,
                 modifier = Modifier.focusRequester(focus)
-            ) { Text("Update now · به‌روزرسانی") }
+            ) { Text(stringResource(R.string.btn_update_now)) }
         },
         dismissButton = {
             TextButton(onClick = { viewModel.postponeUpdate() }, enabled = progress == null) {
-                Text("Later · بعدا")
+                Text(stringResource(R.string.btn_later))
             }
         }
     )

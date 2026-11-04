@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AirPlay TV</string>
+
+    <!-- 通知 -->
+    <string name="notification_channel">AirPlay 服务</string>
+    <string name="notification_channel_cast">AirPlay 投屏</string>
+    <string name="notification_channel_cast_desc">AirPlay 投屏时自动唤醒全屏播放</string>
+    <string name="notification_title">AirPlay TV 正在运行</string>
+    <string name="notification_text">正在接收 AirPlay 投屏连接</string>
+    <string name="notification_pin_title">需要 AirPlay PIN 码</string>
+    <string name="notification_pin_text">PIN 码：%1$s</string>
+    <string name="stop_service">停止</string>
+
+    <!-- 标签页 -->
+    <string name="tab_overview">概览</string>
+    <string name="tab_logs">日志</string>
+    <string name="tab_settings">设置</string>
+
+    <!-- 概览 -->
+    <string name="server_stopped">服务器已停止</string>
+    <string name="waiting_for_connection">正在等待设备连接…</string>
+    <string name="waiting_for_playback">请在发送端设备上播放…</string>
+    <string name="error_starting_server">启动服务器出错</string>
+    <string name="connected_count">%d 台已连接</string>
+    <string name="error_label">错误</string>
+    <string name="stopped_label">已停止</string>
+    <string name="status_ready">已就绪，可接收 AirPlay 与 DLNA 投屏</string>
+    <string name="status_stopped">服务器已停止</string>
+    <string name="btn_start">开始</string>
+    <string name="btn_stop">停止</string>
+    <string name="btn_allow">允许</string>
+    <string name="btn_open_settings">打开设置</string>
+    <string name="local_network_label">需要访问本地网络设备</string>
+    <string name="local_network_desc">允许访问本地网络设备，投屏设备才能发现并连接到本电视</string>
+    <string name="unknown_track">未知曲目</string>
+
+    <!-- 投屏引导卡片 -->
+    <string name="howto_ios_title">iPhone · iPad</string>
+    <string name="howto_ios_desc">控制中心 → 屏幕镜像 → 选择“%s”</string>
+    <string name="howto_mac_title">Mac</string>
+    <string name="howto_mac_desc">控制中心 → 屏幕镜像，或在视频中点击 AirPlay 图标</string>
+    <string name="howto_android_title">Android</string>
+    <string name="howto_android_desc">在 B站、优酷、QQ音乐、VLC 等支持 DLNA 的应用中投屏</string>
+
+    <!-- 无障碍描述 -->
+    <string name="cd_pip">画中画</string>
+    <string name="cd_fullscreen">全屏</string>
+    <string name="cd_exit_fullscreen">退出全屏</string>
+    <string name="cd_cover_art">封面</string>
+    <string name="cd_play_pause">播放/暂停</string>
+    <string name="cd_rewind">快退</string>
+    <string name="cd_fast_forward">快进</string>
+    <string name="volume_server">电视端音量</string>
+    <string name="volume_client">手机端音量</string>
+    <string name="volume_value">%1$d%%</string>
+    <string name="cd_download">下载视频</string>
+    <string name="cd_cancel_download">取消下载</string>
+
+    <!-- 视频下载 -->
+    <string name="download_saved">已保存到 %1$s</string>
+    <string name="download_failed">下载失败</string>
+
+    <!-- 播放器手势 -->
+    <string name="gesture_seek_seconds">%1$d 秒</string>
+    <string name="seconds_short">%1$ds</string>
+    <string name="select_playback_speed">播放速度</string>
+    <string name="cd_reset_speed">重置速度</string>
+    <string name="skip_silence">跳过静音</string>
+
+    <!-- 播放器控制 -->
+    <string name="cd_back">返回</string>
+    <string name="cd_copy_url">复制视频链接</string>
+    <string name="cd_rotate">旋转屏幕</string>
+    <string name="cd_lock_controls">锁定控制</string>
+    <string name="cd_unlock_controls">解锁控制</string>
+    <string name="scale_best_fit">自适应居中</string>
+    <string name="scale_stretch">拉伸铺满</string>
+    <string name="scale_crop">裁剪填充</string>
+    <string name="scale_hundred_percent">100% 原始比例</string>
+
+    <!-- 对话框 -->
+    <string name="dialog_pin_title">AirPlay 屏幕镜像 PIN 码</string>
+    <string name="btn_ok">确定</string>
+
+    <!-- 设备连接授权弹窗 -->
+    <string name="dialog_approval_title">新设备连接请求</string>
+    <string name="dialog_approval_message">“%1$s” 请求通过 %2$s 连接投屏</string>
+    <string name="dialog_approval_hint">如果选择“始终允许”，下次该设备连接时将无需确认直接投屏（%d 秒）</string>
+    <string name="btn_always_allow">始终允许</string>
+    <string name="btn_only_this_time">仅允许本次</string>
+    <string name="btn_deny">拒绝</string>
+
+    <!-- 软件更新弹窗与管理器 -->
+    <string name="dialog_update_title">发现新版本：%s</string>
+    <string name="dialog_update_version">当前版本：%1$s  →  最新版本：%2$s</string>
+    <string name="dialog_update_downloading">正在下载… %d%%</string>
+    <string name="btn_update_now">立即更新</string>
+    <string name="btn_later">稍后</string>
+    <string name="update_checking">正在检查更新…</string>
+    <string name="update_failed_network">无法连接到 GitHub</string>
+    <string name="update_new_version">发现新版本 %s</string>
+    <string name="update_up_to_date">已是最新版本 (%s)</string>
+    <string name="update_installing">正在安装更新…</string>
+    <string name="update_failed">更新失败：%s</string>
+
+    <!-- 日志页 -->
+    <string name="btn_export">导出</string>
+    <string name="btn_clear">清空</string>
+    <string name="export_logs_chooser_title">导出日志文件</string>
+
+    <!-- 设置分区 -->
+    <string name="section_server">服务器</string>
+    <string name="section_connection">连接与发现</string>
+    <string name="section_display">显示</string>
+    <string name="section_subtitles">字幕设置</string>
+    <string name="section_devices">已授权设备</string>
+    <string name="section_updates">软件更新</string>
+    <string name="section_decode">解码设置</string>
+    <string name="section_developer">开发者选项</string>
+
+    <!-- 设置：服务器 -->
+    <string name="setting_server_name">电视设备名称</string>
+    <string name="setting_server_port">服务端口</string>
+    <string name="setting_auto_start">打开应用时自动启动服务</string>
+    <string name="setting_auto_start_desc">应用启动时自动开启 AirPlay 与 DLNA 接收服务</string>
+    <string name="setting_boot_auto_start">开机自启</string>
+    <string name="setting_boot_auto_start_desc">电视开机时在后台自动启动接收服务</string>
+    <string name="setting_run_in_background">后台持续运行</string>
+    <string name="setting_run_in_background_desc">离开应用回到电视桌面后，服务依然在后台常驻待命</string>
+
+    <!-- 设置：连接 -->
+    <string name="setting_require_pin">连接要求输入 PIN 码（测试版）</string>
+    <string name="setting_require_pin_desc">每次新连接时在电视上显示 4 位数密码要求手机输入</string>
+    <string name="setting_allow_new_conn">允许抢占连接</string>
+    <string name="setting_allow_new_conn_desc">有新设备发起投屏时，自动断开当前设备并切换到新设备</string>
+
+    <!-- 设置：显示 -->
+    <string name="setting_idle_preview">待机主页预览</string>
+    <string name="setting_idle_preview_desc">在主页等待连接时显示投屏视频画面</string>
+    <string name="setting_auto_fullscreen">自动全屏直通</string>
+    <string name="setting_auto_fullscreen_desc">手机一投屏直接进入全屏画面，不显示应用操作界面</string>
+    <string name="setting_keep_screen_on">保持屏幕常亮</string>
+    <string name="setting_keep_screen_on_desc">投屏期间防止电视进入息屏或休眠模式</string>
+    <string name="setting_advertise_video">广播 AirPlay 视频投屏支持</string>
+    <string name="setting_advertise_video_desc">关闭后，视频投屏将降级为纯音频流</string>
+    <string name="setting_advertise_mirroring">广播 AirPlay 屏幕镜像支持</string>
+    <string name="setting_advertise_mirroring_desc">关闭后，本设备不会出现在手机屏幕镜像列表中</string>
+    <string name="setting_advertise_audio">广播 AirPlay 音频投屏支持</string>
+    <string name="setting_advertise_audio_desc">关闭后，设备仅用于屏幕镜像，不会在媒体播放器投音响列表中显示</string>
+    <string name="setting_alac">广播 ALAC 无损音频解码</string>
+    <string name="setting_alac_desc">在 mDNS 广播中声明支持 ALAC；常用于高品质音乐流</string>
+    <string name="setting_aac">广播 AAC 音频解码</string>
+    <string name="setting_aac_desc">在 mDNS 广播中声明支持 AAC-ELD/AAC-LC；用于屏幕镜像音频</string>
+    <string name="setting_launch_on_connect">手机投屏时唤醒画面</string>
+    <string name="setting_launch_on_connect_desc">发送端发起连接时，自动将投屏画面拉起显示到电视上</string>
+    <string name="setting_launch_on_connect_no_permission">点击授予“在其他应用上层显示”权限</string>
+    <string name="setting_overlay_permission">允许“在其他应用上层显示”</string>
+    <string name="setting_overlay_permission_desc">用于在您使用其他应用时也能弹出连接确认提示</string>
+    <string name="setting_discovery">网络广播通道</string>
+    <string name="setting_discovery_all_desc">在所有可用网络接口（Wi-Fi、有线以太网）上广播。使用 NsdManager。</string>
+    <string name="setting_discovery_usb_desc">仅通过 USB 网络共享广播以强制有线连接。使用自定义 mDNS 响应器。</string>
+    <string name="chip_all_networks">所有网络</string>
+    <string name="chip_usb_only">仅 USB 网络</string>
+    <string name="setting_resolution">广播分辨率</string>
+    <string name="setting_resolution_desc">向发送端手机广播的推荐视频分辨率</string>
+    <string name="setting_resolution_placeholder">[宽]x[高]</string>
+    <string name="setting_resolution_width">宽度</string>
+    <string name="setting_resolution_height">高度</string>
+    <string name="setting_max_fps">最大帧率</string>
+    <string name="setting_max_fps_desc">向发送端手机广播的最大帧率（如 60）</string>
+    <string name="setting_max_fps_placeholder">FPS</string>
+    <string name="setting_overscanned">过扫描边缘补偿</string>
+    <string name="setting_overscanned_desc">为部分电视的画面边缘过扫描裁剪添加安全边框</string>
+    <string name="chip_custom">自定义</string>
+    <string name="chip_device_portrait">竖屏</string>
+    <string name="chip_device_landscape">横屏</string>
+
+    <!-- 设置：字幕 -->
+    <string name="setting_sub_enabled">显示外挂字幕</string>
+    <string name="setting_sub_enabled_desc">自动查找视频同目录下的同名 .vtt 或 .srt 字幕文件</string>
+    <string name="setting_sub_sample_text">这是一条示例字幕\nThis is a sample subtitle</string>
+    <string name="setting_sub_font">字幕字体</string>
+    <string name="setting_sub_bold">粗体</string>
+    <string name="setting_sub_bold_desc">文字加粗显示</string>
+    <string name="setting_sub_size">字号大小</string>
+    <string name="setting_sub_size_desc">字幕文字字号</string>
+    <string name="setting_sub_color">字幕颜色</string>
+    <string name="setting_sub_edge">文字描边</string>
+    <string name="setting_sub_edge_desc">增强明亮背景下的文字可读性</string>
+    <string name="setting_sub_background">字幕背景框</string>
+    <string name="setting_sub_background_desc">字幕背后的半透明深色背景框</string>
+    <string name="setting_sub_position">底部边距</string>
+    <string name="setting_sub_position_desc">字幕距离电视屏幕底部的距离</string>
+    <string name="setting_sub_timing">时间校准（毫秒）</string>
+    <string name="setting_sub_reset">复位</string>
+    <string name="setting_sub_reset_style">恢复字幕默认样式</string>
+    <string name="setting_sub_reset_style_desc">恢复为默认字体、30号字、白色、描边</string>
+
+    <!-- 颜色名称 -->
+    <string name="color_white">白色</string>
+    <string name="color_yellow">黄色</string>
+    <string name="color_light_yellow">浅黄</string>
+    <string name="color_cyan">青色</string>
+    <string name="color_green">绿色</string>
+    <string name="color_orange">橙色</string>
+    <string name="color_pink">粉色</string>
+    <string name="color_grey">浅灰</string>
+
+    <!-- 设置：设备 -->
+    <string name="setting_dlna">安卓 DLNA 投屏</string>
+    <string name="setting_dlna_desc">允许安卓设备及 VLC、B站、QQ音乐、网易云等应用通过 DLNA 投送视频</string>
+    <string name="setting_ask_approval">新设备连接前确认</string>
+    <string name="setting_ask_approval_desc">首次连接需在电视上遥控器确认允许，之后将自动信任</string>
+    <string name="no_trusted_devices">暂无已信任的设备</string>
+    <string name="no_trusted_devices_desc">在连接确认弹窗中选择“始终允许”后会在此处列出</string>
+    <string name="btn_remove">删除</string>
+    <string name="btn_forget_all">清除全部</string>
+
+    <!-- 设置：更新 -->
+    <string name="setting_auto_update">自动检查更新</string>
+    <string name="setting_auto_update_desc">每 12 小时自动检查 GitHub 上的最新发布版本</string>
+    <string name="update_version_current">当前版本 %s</string>
+    <string name="btn_install_update">安装更新 %s</string>
+    <string name="btn_check_update">立即检查</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_cancel">取消</string>
+
+    <!-- 设置：解码 -->
+    <string name="setting_h265">H.265 (HEVC) 硬件解码</string>
+    <string name="setting_h265_desc">自动模式只使用系统已确认支持的 H.265 硬件解码器</string>
+    <string name="setting_enforce_sdr">强制 SDR 色域传输</string>
+    <string name="setting_enforce_sdr_desc">将视频标记为受限 SDR；关闭以允许 HDR 源直通</string>
+    <string name="setting_sw_alac">强制软件 ALAC 解码器</string>
+    <string name="setting_sw_alac_desc">使用内置软件 ALAC 解码器替代系统解码器</string>
+    <string name="setting_sw_aac">强制软件 AAC 解码器</string>
+    <string name="setting_sw_aac_desc">使用内置软件 AAC 解码器替代系统解码器</string>
+    <string name="setting_sync_client_volume">同步手机发送端音量</string>
+    <string name="setting_sync_client_volume_desc">自动用手机调节的音量同步控制电视接收端音量</string>
+
+    <!-- 设置：开发者 -->
+    <string name="setting_developer_options">开发者选项</string>
+    <string name="setting_developer_options_desc">显示面向高级用户的底层音视频调节参数</string>
+    <string name="setting_key_allow_frame_drop">允许内部丢帧 (KEY_ALLOW_FRAME_DROP)</string>
+    <string name="setting_key_allow_frame_drop_desc">允许视频解码器在 Android 10+ 上内部丢帧以保持实时流畅</string>
+    <string name="setting_realtime_decoder_priority">音频实时优先级 (KEY_PRIORITY)</string>
+    <string name="setting_realtime_decoder_priority_desc">为音频解码器请求系统实时调度优先级</string>
+    <string name="setting_operating_rate">最大工作速率 (KEY_OPERATING_RATE)</string>
+    <string name="setting_operating_rate_desc">向解码器请求最大工作速率以降低延迟</string>
+    <string name="chip_auto">自动</string>
+    <string name="chip_on">开启</string>
+    <string name="chip_off">关闭</string>
+    <string name="setting_low_latency">低延迟音频模式</string>
+    <string name="setting_low_latency_desc">输出使用低延迟音频解码管道；CPU 负载稍高</string>
+    <string name="setting_scheduled_output_buffer_release">VSYNC 帧同步节奏对齐</string>
+    <string name="setting_scheduled_output_buffer_release_desc">将每个解码帧精确调度到与其时间戳匹配的垂直同步脉冲</string>
+    <string name="setting_audio_delay">覆盖音频延迟（毫秒）</string>
+    <string name="setting_audio_delay_desc">设置向手机发送端报告的音频延迟时间</string>
+    <string name="audio_delay_value">%dms</string>
+    <string name="setting_audio_auto_buffer">自适应软件音频缓冲区</string>
+    <string name="setting_audio_auto_buffer_desc">根据网络状况与电视芯片性能自适应调节缓冲区大小以吸收抖动</string>
+    <string name="audio_adaptive_value">%1$d%%（%2$s）</string>
+    <string-array name="audio_adaptive_step_names">
+        <item>最低延迟</item>
+        <item>较低延迟</item>
+        <item>均衡推荐</item>
+        <item>更稳定</item>
+        <item>最高抗抖动</item>
+    </string-array>
+    <string name="setting_audio_cushion_ms">软件音频缓冲时长（毫秒）</string>
+    <string name="setting_audio_cushion_ms_desc">用于吸收网络与解码抖动的缓冲时间：时间越短延迟越低；时间越长卡顿越少</string>
+    <string name="setting_oboe_buffer_frames">硬件输出缓冲大小（帧）</string>
+    <string name="setting_oboe_buffer_frames_desc">应用与电视音频硬件之间的底层流缓冲区，保持 0 为系统自动设置</string>
+    <string name="setting_debug_overlay">显示屏幕调试统计浮层</string>
+    <string name="setting_debug_overlay_desc">在投屏视频上实时显示：编码格式、FPS、码率、抖动、渲染帧数、丢帧数</string>
+    <string name="setting_benchmark_log">写入调试日志</string>
+    <string name="setting_benchmark_log_desc">将流统计信息输出到 logcat 日志系统</string>
+
+    <!-- 调试浮层 -->
+    <string name="debug_section_video">视频</string>
+    <string name="debug_section_audio">音频</string>
+    <string name="debug_section_network">网络</string>
+    <string name="debug_video">%1$s %2$s</string>
+    <string name="debug_fps_bitrate">FPS：%1$d  码率：%2$s</string>
+    <string name="debug_frames_drops">总帧数：%1$d  丢帧：%2$d</string>
+    <string name="debug_jitter">抖动：%1$s</string>
+    <string name="debug_audio">%1$s  接收端：%2$d%%  发送端：%3$d%%</string>
+    <string name="debug_audio_buffer">缓冲区：%1$d ms（目标：%2$d ms）</string>
+    <string name="debug_audio_glitch">异常：trim=%1$d drop=%2$d sil=%3$d ur=%4$d xrun=%5$d</string>
+    <string name="debug_audio_decode">解码：%1$s</string>
+    <string name="debug_clients">已连接发送端：%1$d</string>
+    <!-- 关于 -->
+    <string name="section_about">关于与特色说明</string>
+    <string name="about_app_name">AirPlay TV 原生增强版 (v1.1.0)</string>
+    <string name="about_app_desc">专为 Android TV / 电视盒子深度定制的 Apple AirPlay 原生投屏接收端。</string>
+    <string name="about_features_title">修改版核心特色</string>
+    <string name="about_features_desc">1. 原生投屏：手机投屏直接黑底全屏弹出，无需手动打开 App\n2. 干净退出：投屏结束或遥控器按返回，秒级直回电视桌面，无页面闪烁\n3. 架构分离：开机后台静默守护，电视桌面图标纯作设置面板，平时无需打开\n4. 穿透唤醒：高优先级全屏意图，彻底解决 Android 10+ 后台启动拦截\n5. 双架构加速：支持 armeabi-v7a / arm64-v8a 低延迟硬解，画面原生无拉伸\n6. 中文优化：100% 简体中文本地化，彻底清理多余语言残留</string>
+    <string name="about_license_title">开源协议与项目说明</string>
+    <string name="about_license_desc">遵循 GPL-3.0 开源协议。基于开源项目 RPiPlay / UxPlay / FFmpeg 核心技术构建。</string>
+</resources>
